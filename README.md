@@ -1,7 +1,6 @@
 # SEComm
 
-The official PyTorch implementation of **S**elf-**E**xpressive Graph Neural Network for Unsupervised
-**Comm**unity Detection.
+The official PyTorch implementation of _Unsupervised Constrained Community Detection via **S**elf-**E**xpressive Graph Neural Network_.
 
 We have used the pytorch implementation of GRACE(https://github.com/CRIPAC-DIG/GRACE) for our self supervised GNN module.
 
