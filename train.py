@@ -35,8 +35,8 @@ def test(x, edge_index, y):
 def test_spectral(c, y_train, n_class):
     y_train_x, _ = post_proC(c, n_class, 4, 1)
     print("Spectral Clustering Done.. Finding Best Fit..")
-    missrate_x = err_rate(y_train.detach().cpu().numpy(), y_train_x)
-    return missrate_x 
+    scores = err_rate(y_train.detach().cpu().numpy(), y_train_x)
+    return scores
 
 
 def parse_arguments():
@@ -147,7 +147,7 @@ def batch_cluster_train(x, edge_index, from_list, to_list, val_list,
         loss = beta*grace_loss + loss1 + alpha*loss2
         loss.backward()
         fulloptimizer.step()
-        print('full_loss: {:.5f}'.format(loss.item()), 'grace_loss: {:.5f}'.format(grace_loss.item()), end=' ')
+        print('Epoch:', epoch, 'full_loss: {:.5f}'.format(loss.item()), 'grace_loss: {:.5f}'.format(grace_loss.item()), end=' ')
         print('loss1: {:.5f}'.format(loss1.item()), 'loss2: {:.5f}'.format(loss2.item()), flush=True)
         if loss2.item()<best_loss:
             bad_count = 0
@@ -277,8 +277,10 @@ if __name__ == '__main__':
             y_train = data.y[train_labels]
             print("\n\n\nStarting self expressive train iteration:", iters+1)
             S = self_expressive_train(x_train, cfg, n_class)
-            #missrate_x = test_spectral(S, y_train, n_class)
-            #print("Similarity Matrix Spectral Clustering Accuracy...", 1-missrate_x)
+
+            print("Performance of Spectral Clustering on the Similarity Matrix")
+            scores = test_spectral(S, y_train, n_class)
+            print(" Ac:", scores[0], "NMI:", scores[1], "F1:", scores[2])
 
             print("\nRetriving similarity values for point pairs")
             count = 0
